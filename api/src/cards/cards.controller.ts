@@ -1,30 +1,42 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { CardsService } from './cards.service';
+import { CreateCardDto, UpdateCardDto } from './dto';
+import { Card } from 'src/cards/interfaces/card.interface';
 
 @Controller('cards')
 export class CardsController {
+  constructor(private cardsService: CardsService) {}
+
   @Post()
-  create(): string {
-    return 'This action adds a new card';
+  create(@Body() createCardDto: CreateCardDto): Card {
+    return this.cardsService.create(createCardDto);
   }
 
   @Get()
-  getAll(): string {
-    return 'Get all cards';
+  getAll(): Card[] {
+    return this.cardsService.findAll();
   }
-
-  //   @Get(':id')
-  //   findOne(@Param() params): string {
-  //     console.log(params.id);
-  //     return `This action returns a #${params.id} card`;
-  //   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): string {
-    return `This action returns a #${id} card`;
+  findOne(@Param('id') id: string): Card {
+    return this.cardsService.findOne(id);
   }
 
-  //   @Get('ab*cd')
-  //   findAll() {
-  //     return 'This route uses a wildcard';
-  //   }
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
+    return this.cardsService.update(id, updateCardDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.cardsService.removeOne(id);
+  }
 }
