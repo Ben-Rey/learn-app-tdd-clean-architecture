@@ -9,25 +9,26 @@ import {
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto, UpdateCardDto } from './dto';
-import { Card } from 'src/cards/interfaces/card.interface';
+import { ICard } from 'src/cards/interfaces/card.interface';
 
 @Controller('cards')
 export class CardsController {
   constructor(private cardsService: CardsService) {}
 
   @Post()
-  create(@Body() createCardDto: CreateCardDto): Card {
+  create(@Body() createCardDto: CreateCardDto): ICard {
     return this.cardsService.create(createCardDto);
   }
 
   @Get()
-  getAll(): Card[] {
+  getAll() {
     return this.cardsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Card {
-    return this.cardsService.findOne(id);
+  findOne(@Param('id') id: string): ICard {
+    // return this.cardsService.findOne(id);
+    return;
   }
 
   @Put(':id')

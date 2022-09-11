@@ -1,6 +1,6 @@
 import { Level } from '../types';
 
-export interface Card {
+export interface ICard {
   id: string;
   createdBy: string;
   createdAt: Date;

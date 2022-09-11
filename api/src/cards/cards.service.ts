@@ -1,18 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateCardDto } from './dto';
-import { Card } from './interfaces/card.interface';
+import { DataSource } from 'typeorm';
+import { CreateCardDto, UpdateCardDto } from './dto';
+import { Card } from './entities/card.entity';
+import { ICard } from './interfaces/card.interface';
 
 @Injectable()
 export class CardsService {
+  constructor(private dataSource: DataSource) {}
+
   private cards: Card[] = [];
 
-  create(_card: Card) {
-    this.cards.push(_card);
+  create(_card: CreateCardDto) {
+    // this.cards.push(_card);
     return _card;
   }
 
-  findAll(): Card[] {
-    return this.cards;
+  async findAll() {
+    const cards: ICard[] = await this.dataSource.manager.find('cards');
+    console.table(cards);
+
+    return cards;
   }
 
   findOne(_id: string): Card {
@@ -20,9 +27,9 @@ export class CardsService {
   }
 
   update(_id: string, _card: UpdateCardDto) {
-    this.cards = this.cards.map((card) => {
-      if (card.id === _id) return { ...card, ..._card };
-    });
+    // this.cards = this.cards.map((card) => {
+    //   if (card.id === _id) return { ...card, ..._card };
+    // });
   }
 
   removeOne(_id: string) {
