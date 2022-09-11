@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   OneToOne,
+  JoinTable,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/user.entity';
+import { Category } from './category.entity';
 
 @Entity()
 export class Card {
@@ -25,17 +27,15 @@ export class Card {
   question: string;
 
   @Column()
-  lastName: string;
+  answer: string;
+
+  @Column()
+  level: string;
+
+  @ManyToMany(() => Category, (category) => category.card)
+  @JoinTable()
+  category: Category[];
 
   @Column({ default: true })
   isActive: boolean;
 }
-
-// id: string;
-// createdBy: string;
-// createdAt: Date;
-// updateAt: Date;
-// question: string;
-// answer: string;
-// level: Level;
-// theme: string[];

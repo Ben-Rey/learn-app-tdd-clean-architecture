@@ -1,11 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Card } from '../cards/entities/card.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -19,4 +26,8 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @ManyToMany(() => Card)
+  @JoinTable()
+  users_cards: Card[];
 }

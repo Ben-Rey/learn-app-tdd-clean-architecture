@@ -8,18 +8,18 @@ services:
       target: development
     volumes:
       - ./api:/usr/src/app
-      - ./usr/src/app/node_modules # This is the only change
+      - /usr/src/app/node_modules # This is the only change
     env_file:
       - .env
     command: npm run start:$STAGE
     ports:
       - 3000:3000
 
-  psql:
+  db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_DB: $POSTGRES_DB
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     volumes:
