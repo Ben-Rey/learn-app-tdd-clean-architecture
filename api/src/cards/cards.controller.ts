@@ -3,11 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Put,
   Param,
   Delete,
   BadRequestException,
   NotFoundException,
+  Patch,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto, UpdateCardDto } from './dto';
@@ -26,7 +26,7 @@ export class CardsController {
   }
 
   @Get()
-  async getAll() {
+  async findAll() {
     return await this.cardsService.findAll();
   }
 
@@ -39,7 +39,7 @@ export class CardsController {
     }
   }
 
-  @Put(':id')
+  @Patch(':id')
   async update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
     try {
       return await this.cardsService.update(id, updateCardDto);
@@ -51,7 +51,7 @@ export class CardsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     try {
-      return this.cardsService.removeOne(id);
+      return this.cardsService.remove(id);
     } catch (error) {
       throw new NotFoundException();
     }

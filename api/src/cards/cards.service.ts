@@ -1,21 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DeleteResult, InsertResult, Repository, UpdateResult } from 'typeorm';
 import { CreateCardDto, UpdateCardDto } from './dto';
 import { Card } from './entities/card.entity';
-import { ICard } from './interfaces/card.interface';
 
 @Injectable()
 export class CardsService {
   constructor(
-    private dataSource: DataSource,
     @InjectRepository(Card) private cardRepository: Repository<Card>,
   ) {}
 
-  private cards: Card[] = [];
-
-  async create(_card: CreateCardDto) {
-    return this.dataSource
+  async create(_card: CreateCardDto): Promise<InsertResult> {
+    return this.cardRepository
       .createQueryBuilder()
       .insert()
       .into(Card)
@@ -23,19 +19,19 @@ export class CardsService {
       .execute();
   }
 
-  async findAll() {
+  async findAll(): Promise<Card[]> {
     return await this.cardRepository.find();
   }
 
-  findOne(id: string) {
+  findOne(_id: string): Promise<Card> {
     return this.cardRepository.findOneOrFail({
       where: {
-        id: id,
+        id: _id,
       },
     });
   }
 
-  async update(_id: string, _card: UpdateCardDto) {
+  async update(_id: string, _card: UpdateCardDto): Promise<UpdateResult> {
     return this.cardRepository
       .createQueryBuilder()
       .update(Card)
@@ -44,7 +40,7 @@ export class CardsService {
       .execute();
   }
 
-  removeOne(_id: string) {
+  remove(_id: string): Promise<DeleteResult> {
     return this.cardRepository
       .createQueryBuilder()
       .delete()
