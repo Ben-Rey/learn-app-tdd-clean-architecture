@@ -8,6 +8,7 @@ import {
   Delete,
   BadRequestException,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
@@ -21,6 +22,9 @@ export class UsersController {
     try {
       return await this.usersService.create(createUserDto);
     } catch (error) {
+      if (error.detail.includes('already exists')) {
+        throw new ConflictException();
+      }
       throw new BadRequestException();
     }
   }
