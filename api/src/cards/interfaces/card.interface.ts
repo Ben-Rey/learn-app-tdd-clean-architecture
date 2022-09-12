@@ -9,4 +9,5 @@ export interface ICard {
   answer: string;
   level: Level;
   theme: string[];
+  category: string;
 }

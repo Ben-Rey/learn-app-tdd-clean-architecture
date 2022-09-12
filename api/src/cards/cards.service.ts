@@ -1,38 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateCardDto, UpdateCardDto } from './dto';
 import { Card } from './entities/card.entity';
 import { ICard } from './interfaces/card.interface';
 
 @Injectable()
 export class CardsService {
-  constructor(private dataSource: DataSource) {}
+  constructor(
+    private dataSource: DataSource,
+    @InjectRepository(Card) private cardRepository: Repository<Card>,
+  ) {}
 
   private cards: Card[] = [];
 
-  create(_card: CreateCardDto) {
-    // this.cards.push(_card);
-    return _card;
+  async create(_card: CreateCardDto) {
+    return this.dataSource
+      .createQueryBuilder()
+      .insert()
+      .into(Card)
+      .values([_card])
+      .execute();
   }
 
   async findAll() {
-    const cards: ICard[] = await this.dataSource.manager.find('cards');
-    console.table(cards);
-
-    return cards;
+    return await this.cardRepository.find();
   }
 
-  findOne(_id: string): Card {
-    return this.cards.find((card) => card.id === _id);
+  findOne(id: string) {
+    return this.cardRepository.findOneOrFail({
+      where: {
+        id: id,
+      },
+    });
   }
 
-  update(_id: string, _card: UpdateCardDto) {
-    // this.cards = this.cards.map((card) => {
-    //   if (card.id === _id) return { ...card, ..._card };
-    // });
+  async update(_id: string, _card: UpdateCardDto) {
+    return this.cardRepository
+      .createQueryBuilder()
+      .update(Card)
+      .set(_card)
+      .where('id = :id', { id: _id })
+      .execute();
   }
 
   removeOne(_id: string) {
-    this.cards = this.cards.filter((card) => card.id !== _id);
+    return this.cardRepository
+      .createQueryBuilder()
+      .delete()
+      .from(Card)
+      .where('id = :id', { id: _id })
+      .execute();
   }
 }

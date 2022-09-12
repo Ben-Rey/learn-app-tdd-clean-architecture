@@ -6,38 +6,54 @@ import {
   Put,
   Param,
   Delete,
+  BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { CreateCardDto, UpdateCardDto } from './dto';
-import { ICard } from 'src/cards/interfaces/card.interface';
 
 @Controller('cards')
 export class CardsController {
   constructor(private cardsService: CardsService) {}
 
   @Post()
-  create(@Body() createCardDto: CreateCardDto): ICard {
-    return this.cardsService.create(createCardDto);
+  async create(@Body() createCardDto: CreateCardDto) {
+    try {
+      return await this.cardsService.create(createCardDto);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
   @Get()
-  getAll() {
-    return this.cardsService.findAll();
+  async getAll() {
+    return await this.cardsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): ICard {
-    // return this.cardsService.findOne(id);
-    return;
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.cardsService.findOne(id);
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
-    return this.cardsService.update(id, updateCardDto);
+  async update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
+    try {
+      return await this.cardsService.update(id, updateCardDto);
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.cardsService.removeOne(id);
+    try {
+      return this.cardsService.removeOne(id);
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 }

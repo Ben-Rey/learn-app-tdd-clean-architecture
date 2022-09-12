@@ -17,10 +17,10 @@ export class Card {
   @OneToOne(() => User)
   createdBy: string;
 
-  @Column({ type: 'date' })
-  createdAt: string;
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP(6)' })
+  createdAt: Date;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP(6)' })
   updateAt: string;
 
   @Column()
@@ -30,9 +30,9 @@ export class Card {
   answer: string;
 
   @Column()
-  level: string;
+  level: number;
 
-  @ManyToMany(() => Category, (category) => category.card)
+  @ManyToMany(() => Category)
   @JoinTable()
   category: Category[];
 

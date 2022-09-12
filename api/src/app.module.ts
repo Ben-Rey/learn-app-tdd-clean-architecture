@@ -19,6 +19,7 @@ import { Card } from './cards/entities/card.entity';
       database: process.env.POSTGRES_DB,
       entities: [User, Card],
       synchronize: true,
+      autoLoadEntities: true,
     }),
     ConfigModule.forRoot(),
     CardModule,
