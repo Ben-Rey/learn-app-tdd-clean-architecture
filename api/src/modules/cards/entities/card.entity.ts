@@ -7,7 +7,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { User } from '../../users/user.entity';
-import { Category } from './category.entity';
+import { Category } from '../../categories/entities/category.entity';
 
 @Entity()
 export class Card {

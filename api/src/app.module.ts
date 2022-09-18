@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CardModule } from './cards/cards.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
-import { User } from './users/user.entity';
-import { Card } from './cards/entities/card.entity';
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
+import { CardModule } from './modules//cards/cards.module';
+import { Card } from './modules/cards/entities/card.entity';
+import { UsersModule } from './modules//users/users.module';
+import { User } from './modules//users/user.entity';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { Card } from './cards/entities/card.entity';
     ConfigModule.forRoot(),
     CardModule,
     UsersModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
