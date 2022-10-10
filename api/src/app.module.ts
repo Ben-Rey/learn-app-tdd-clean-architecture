@@ -8,6 +8,7 @@ import { Card } from './modules/cards/entities/card.entity';
 import { UsersModule } from './modules//users/users.module';
 import { User } from './modules//users/user.entity';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { Category } from './modules/categories/entities/category.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      entities: [User, Card],
+      entities: [User, Card, Category],
       synchronize: true,
       autoLoadEntities: true,
     }),

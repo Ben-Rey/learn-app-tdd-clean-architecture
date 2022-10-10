@@ -1,4 +1,3 @@
-import { Category } from '../entities/category.entity';
 import { Level } from '../types/';
 
 export class CreateCardDto {

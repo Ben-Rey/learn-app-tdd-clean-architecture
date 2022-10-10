@@ -32,8 +32,21 @@ export class Card {
   @Column()
   level: number;
 
+  @Column()
+  vote: number;
+
   @ManyToMany(() => Category)
-  @JoinTable()
+  // @JoinTable({
+  //   name: 'cards_categories', // table name for the junction table of this relation
+  //   joinColumn: {
+  //     name: 'question',
+  //     referencedColumnName: 'id',
+  //   },
+  //   inverseJoinColumn: {
+  //     name: 'category',
+  //     referencedColumnName: 'id',
+  //   },
+  // })
   category: Category[];
 
   @Column({ default: true })
