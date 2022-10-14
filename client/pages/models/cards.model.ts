@@ -8,6 +8,6 @@ export interface ICard {
   question: string;
   answer: string;
   level: Level;
-  theme: string[];
+  tag: string[];
   category: string[];
 }

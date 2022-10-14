@@ -21,7 +21,7 @@ export class CardsController {
     try {
       return await this.cardsService.create(createCardDto);
     } catch (error) {
-      throw new BadRequestException();
+      throw new BadRequestException(error);
     }
   }
 

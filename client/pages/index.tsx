@@ -1,15 +1,21 @@
-import { Button, Grid, GridItem } from "@chakra-ui/react";
-import type { NextPage } from "next";
+import type { ReactElement } from "react";
+import type { NextPageWithLayout } from "./_app";
+import MainLayout from "../components/layouts/main-layout";
+import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 
-const Home: NextPage = () => {
+const Page: NextPageWithLayout = () => {
   return (
     <>
-      <Link href="/cards/create">
-        <Button colorScheme="blue">Create a Card</Button>
-      </Link>
+      <Button>
+        <Link href={"/cards/create"}>Hello</Link>
+      </Button>
     </>
   );
 };
 
-export default Home;
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <MainLayout>{page}</MainLayout>;
+};
+
+export default Page;
