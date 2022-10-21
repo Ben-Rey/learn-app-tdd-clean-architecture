@@ -25,6 +25,7 @@ import {
   Square,
   Circle,
 } from "@chakra-ui/react";
+import React from "react";
 import { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -52,62 +53,72 @@ const tagsExample = [
   },
 ];
 
-const level = [
+const levelList = [
   {
     id: 1,
     niveau: "Ultra facile",
-    color: "green",
+    color: "",
+    isActive: true,
   },
   {
     id: 2,
     niveau: "Très facile",
-    color: "green",
+    color: "",
+    isActive: false,
   },
   {
     id: 3,
     niveau: "Assez facile",
-    color: "green",
+    color: "",
+    isActive: false,
   },
   {
     id: 4,
     niveau: "Facile",
-    color: "orange",
+    color: "",
+    isActive: false,
   },
   {
     id: 5,
     niveau: "Moins facile",
-    color: "red",
+    color: "",
+    isActive: false,
   },
   {
     id: 6,
     niveau: "Moyen",
-    color: "green",
+    color: "",
+    isActive: false,
   },
   {
     id: 7,
     niveau: "Moyen +",
-    color: "green",
+    color: "",
   },
   {
     id: 8,
     niveau: "Difficile",
-    color: "green",
+    color: "",
+    isActive: false,
   },
   {
     id: 9,
     niveau: "Très difficile",
-    color: "orange",
+    color: "",
+    isActive: false,
   },
   {
     id: 10,
     niveau: "Master Level",
-    color: "red",
+    color: "",
+    isActive: false,
   },
 ];
 
 export default function CreateCard() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [tags, setTags] = useState<Tag[]>(() => tagsExample);
+  const [levels, setLevels] = useState(levelList);
 
   const {
     handleSubmit,
@@ -166,17 +177,12 @@ export default function CreateCard() {
           padding={5}
           borderRadius={15}
         >
-          <FormControl
-            backgroundColor={"#D9D9D9"}
-            padding={3}
-            borderRadius={15}
-          >
+          <FormControl padding={3} borderRadius={15}>
             <FormLabel>Question</FormLabel>
             <Input type="text" />
           </FormControl>
 
           <FormControl
-            backgroundColor={"#D9D9D9"}
             paddingLeft="10px"
             borderRadius={"15px 15px 15px 15px"}
             paddingBottom="10px"
@@ -187,13 +193,23 @@ export default function CreateCard() {
           </FormControl>
 
           <HStack spacing={4}>
-            {level.map((level) => (
-              <Button key={level.niveau} colorScheme={level.color}>
+            {levels.map((level) => (
+              <Button
+                key={level.niveau}
+                isActive={level.isActive}
+                border="1px solid gray"
+              >
                 {level.id}
               </Button>
             ))}
           </HStack>
-
+          <Select placeholder="Select option" onChange={handleTagSelection}>
+            {tags.map((tag) => (
+              <option key={tag.name} value={tag.name}>
+                {tag.name}
+              </option>
+            ))}
+          </Select>
           <HStack spacing={4}>
             {selectedTags.map((tag) => (
               <Tag size="md" key={tag.name} colorScheme={tag.color}>
@@ -202,18 +218,6 @@ export default function CreateCard() {
               </Tag>
             ))}
           </HStack>
-
-          <Select
-            placeholder="Select option"
-            onChange={handleTagSelection}
-            backgroundColor={"#D9D9D9"}
-          >
-            {tags.map((tag) => (
-              <option key={tag.name} value={tag.name}>
-                {tag.name}
-              </option>
-            ))}
-          </Select>
         </VStack>
       </Center>
     </>
