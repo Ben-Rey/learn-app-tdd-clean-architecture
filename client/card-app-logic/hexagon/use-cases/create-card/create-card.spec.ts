@@ -16,6 +16,7 @@ describe("Create card", () => {
   });
 
   it("should create a card", async () => {
+    cardGateway.setFakeResponse(fakeReturn);
     expect(await cardGateway.createCard()).toStrictEqual(fakeReturn);
   });
 });

@@ -1,7 +1,6 @@
-interface CardPostResponseIdentifier {
+interface CardPostResponseId {
   id: string;
 }
-
 export interface CardPostResponse {
-  identifiers: CardPostResponseIdentifier[];
+  identifiers: CardPostResponseId[];
 }
