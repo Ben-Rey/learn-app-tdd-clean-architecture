@@ -28,6 +28,9 @@ import {
 import React from "react";
 import { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRef } from 'react';
+
+
 
 interface Tag {
   name: string;
@@ -126,6 +129,14 @@ export default function CreateCard() {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  //export default function Counter() {
+    //let ref = useRef(0);
+  
+    function handleClickLevel() {
+      //ref.current = ref.current + 1;
+      alert('You clicked on a level' );
+    }
+
   function onSubmit(values: any) {
     return new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -194,7 +205,7 @@ export default function CreateCard() {
 
           <HStack spacing={4}>
             {levels.map((level) => (
-              <Button
+              <Button onClick={handleClickLevel}
                 key={level.niveau}
                 isActive={level.isActive}
                 border="1px solid gray"
