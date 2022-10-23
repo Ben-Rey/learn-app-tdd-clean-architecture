@@ -1,5 +1,6 @@
-import { CardPostResponse } from "../models/postCard";
+import { CardPostResponse, ICard } from "../models/Card";
 
 export interface CardGateway {
-  createCard(): Promise<CardPostResponse>;
+  createCard(card: ICard): Promise<CardPostResponse>;
+  getCardList(): Promise<ICard[]>;
 }

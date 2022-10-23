@@ -1,3 +1,7 @@
+import { ICard } from "../hexagon/models/Card";
+
 export interface AppState {
-  postCard;
+  cards: {
+    cardList: ICard[];
+  };
 }
