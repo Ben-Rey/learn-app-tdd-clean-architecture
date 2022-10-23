@@ -1,36 +1,19 @@
 import {
-  Link,
   Input,
-  Heading,
   FormLabel,
-  Container,
   FormControl,
-  FormHelperText,
-  Box,
   Center,
   VStack,
   HStack,
-  Radio,
-  RadioGroup,
   Button,
-  FormErrorMessage,
-  Progress,
   Tag,
   TagCloseButton,
   TagLabel,
   Select,
-  IconButton,
-  Flex,
-  Spacer,
-  Square,
-  Circle,
 } from "@chakra-ui/react";
-import React from "react";
-import { ChangeEventHandler, MouseEventHandler, useState } from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRef } from 'react';
-
-
 
 interface Tag {
   name: string;
@@ -97,7 +80,7 @@ const levelList = [
     id: 7,
     niveau: "Moyen +",
     color: "",
-    isActive: false
+    isActive: false,
   },
   {
     id: 8,
@@ -122,28 +105,12 @@ const levelList = [
 export default function CreateCard() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [tags, setTags] = useState<Tag[]>(() => tagsExample);
-  const [levels, setLevels] = useState(levelList);
-  //const [isActive, setIsActive] = useState(false);
+  const [levels, setLevels] = useState(() => levelList);
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm();
-
-  
-  
-    function handleClickLevel() {
-      //1. Passer un paramètre à la fonction handleClickLevel
-      //2. Regarder le fonctionnement de useState 
-      //3. Modifier un tableau d'objets => isActive = true
-
-      setLevels({
-        ...levels,
-        isActive: true
-      });
-      //return {...levelList, isActive: true}
-    }
+  function handleClickLevel(levelId: number) {
+    levels.map((level) => (level.isActive = level.id === levelId));
+    setLevels([...levels]);
+  }
 
   function onSubmit(values: any) {
     return new Promise<void>((resolve) => {
@@ -165,14 +132,10 @@ export default function CreateCard() {
   }
 
   function handleRemoveTag(tagName: string) {
-    const selectedTagName = tagName;
-
-    const tagToRemove = selectedTags.find(
-      (tag) => tag.name === selectedTagName
-    );
+    const tagToRemove = selectedTags.find((tag) => tag.name === tagName);
 
     const newSelectedTagList = selectedTags.filter(
-      (tag) => tag.name !== selectedTagName
+      (tag) => tag.name !== tagName
     );
 
     if (tagToRemove) {
@@ -213,7 +176,8 @@ export default function CreateCard() {
 
           <HStack spacing={4}>
             {levels.map((level) => (
-              <Button onClick={handleClickLevel}
+              <Button
+                onClick={() => handleClickLevel(level.id)}
                 key={level.niveau}
                 isActive={level.isActive}
                 border="1px solid gray"
