@@ -61,7 +61,7 @@ const levelList = [
     id: 1,
     niveau: "Ultra facile",
     color: "",
-    isActive: true,
+    isActive: false,
   },
   {
     id: 2,
@@ -97,6 +97,7 @@ const levelList = [
     id: 7,
     niveau: "Moyen +",
     color: "",
+    isActive: false
   },
   {
     id: 8,
@@ -122,6 +123,7 @@ export default function CreateCard() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [tags, setTags] = useState<Tag[]>(() => tagsExample);
   const [levels, setLevels] = useState(levelList);
+  //const [isActive, setIsActive] = useState(false);
 
   const {
     handleSubmit,
@@ -129,12 +131,18 @@ export default function CreateCard() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  //export default function Counter() {
-    //let ref = useRef(0);
+  
   
     function handleClickLevel() {
-      //ref.current = ref.current + 1;
-      alert('You clicked on a level' );
+      //1. Passer un paramètre à la fonction handleClickLevel
+      //2. Regarder le fonctionnement de useState 
+      //3. Modifier un tableau d'objets => isActive = true
+
+      setLevels({
+        ...levels,
+        isActive: true
+      });
+      //return {...levelList, isActive: true}
     }
 
   function onSubmit(values: any) {
