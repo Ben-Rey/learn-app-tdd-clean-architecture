@@ -1,16 +1,19 @@
-import type { ReactElement } from "react";
+import { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
 import MainLayout from "../components/layouts/main-layout";
-import { Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 
 const Page: NextPageWithLayout = () => {
   return (
-    <>
-      <Button>
-        <Link href={"/cards/create"}>Hello</Link>
-      </Button>
-    </>
+    <Flex experimental_spaceX={4}>
+      <Link href={"/cards/create"}>
+        <Button>Create Card</Button>
+      </Link>
+      <Link href={"/cards/list"}>
+        <Button>Card List</Button>
+      </Link>
+    </Flex>
   );
 };
 

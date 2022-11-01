@@ -25,12 +25,10 @@ import {
   Square,
   Circle,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRef } from 'react';
-
-
+import { useRef } from "react";
 
 interface Tag {
   name: string;
@@ -122,6 +120,11 @@ export default function CreateCard() {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [tags, setTags] = useState<Tag[]>(() => tagsExample);
   const [levels, setLevels] = useState(levelList);
+  const [level, setLevel] = useState({
+    id: 7,
+    niveau: "Moyen +",
+    color: "",
+  });
 
   const {
     handleSubmit,
@@ -130,12 +133,14 @@ export default function CreateCard() {
   } = useForm();
 
   //export default function Counter() {
-    //let ref = useRef(0);
-  
-    function handleClickLevel() {
-      //ref.current = ref.current + 1;
-      alert('You clicked on a level' );
-    }
+  //let ref = useRef(0);
+
+  function handleClickLevel() {
+    //ref.current = ref.current + 1;
+    setLevel((prevState) => {
+      return { ...prevState, niveau: "jzdoijzd" };
+    });
+  }
 
   function onSubmit(values: any) {
     return new Promise<void>((resolve) => {
@@ -205,7 +210,8 @@ export default function CreateCard() {
 
           <HStack spacing={4}>
             {levels.map((level) => (
-              <Button onClick={handleClickLevel}
+              <Button
+                onClick={handleClickLevel}
                 key={level.niveau}
                 isActive={level.isActive}
                 border="1px solid gray"
