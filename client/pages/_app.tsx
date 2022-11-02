@@ -8,6 +8,7 @@ import { initReduxStore } from "../card-app-logic/store/reduxStore";
 import FakeCardGateway from "../card-app-logic/adapters/secondary/gateways/CardGateway.fake";
 import { fakeCardList } from "../card-app-logic/helpers/data.fake";
 import { Provider } from "react-redux";
+import SidebarWithHeader from "../components/sidebar/Sidebar";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -22,12 +23,15 @@ cardGateway.setFakeCardList(fakeCardList);
 const store = initReduxStore({ cardGateway });
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout): JSX.Element {
-  const getLayout = Component.getLayout ?? ((page: any) => page);
+  // const getLayout = Component.getLayout ?? ((page: any) => page);
 
-  return getLayout(
+  // return getLayout(
+  return (
     <ChakraProvider theme={theme}>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <SidebarWithHeader>
+          <Component {...pageProps} />
+        </SidebarWithHeader>
       </Provider>
     </ChakraProvider>
   );

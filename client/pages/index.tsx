@@ -13,6 +13,9 @@ const Page: NextPageWithLayout = () => {
       <Link href={"/cards/list"}>
         <Button>Card List</Button>
       </Link>
+      <Link href={"/cards/play"}>
+        <Button>Card Play</Button>
+      </Link>
     </Flex>
   );
 };

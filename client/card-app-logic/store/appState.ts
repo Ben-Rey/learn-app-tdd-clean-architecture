@@ -4,4 +4,8 @@ export interface AppState {
   cards: {
     cardList: ICard[];
   };
+  cardGame: {
+    cardList: ICard[];
+    currentCardIndex: number;
+  };
 }

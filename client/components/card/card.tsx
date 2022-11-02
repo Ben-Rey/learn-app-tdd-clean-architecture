@@ -3,9 +3,10 @@ import { ICard } from "../../card-app-logic/hexagon/models/Card";
 
 interface Props {
   card: ICard;
+  showAnswer?: boolean;
 }
 
-export default function Card({ card }: Props) {
+export default function Card({ card, showAnswer = false }: Props) {
   return (
     <Box
       key={card.id}
@@ -22,6 +23,7 @@ export default function Card({ card }: Props) {
         </Badge>
       ))}
       <Box>{card.question}</Box>
+      {showAnswer && <Box>{card.answer}</Box>}
     </Box>
   );
 }

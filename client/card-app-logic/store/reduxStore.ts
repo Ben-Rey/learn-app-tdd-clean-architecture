@@ -10,6 +10,7 @@ import { CurriedGetDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMid
 import { CardGateway } from "../hexagon/gateways/cardGateway";
 import { AppState } from "./appState";
 import cards from "../hexagon/reducers/cardSlice";
+import cardGame from "../hexagon/reducers/gameSlice";
 
 interface Dependencies {
   cardGateway: CardGateway;
@@ -19,6 +20,7 @@ export const initReduxStore = (dependencies: Partial<Dependencies>) => {
   return configureStore({
     reducer: {
       cards,
+      cardGame,
     },
     devTools: true,
     middleware: (getDefaultMiddleware: CurriedGetDefaultMiddleware<AppState>) =>

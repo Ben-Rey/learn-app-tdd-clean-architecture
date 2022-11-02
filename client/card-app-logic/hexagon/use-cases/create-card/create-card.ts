@@ -8,10 +8,3 @@ export const createNewCard =
     const response: CardPostResponse = await cardGateway.createCard(card);
     dispatch(addNewCard(response));
   };
-
-export const fetchCardList =
-  (): AppThunk =>
-  async (dispatch, _, { cardGateway }) => {
-    const response: ICard[] = await cardGateway.getCardList();
-    dispatch(fetchCards(response));
-  };
