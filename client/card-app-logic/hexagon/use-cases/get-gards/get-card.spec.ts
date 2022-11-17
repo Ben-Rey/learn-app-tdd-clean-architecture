@@ -22,6 +22,7 @@ describe("Create card", () => {
     expect(store.getState()).toEqual({
       ...initialState,
       cards: {
+        ...initialState.cards,
         cardList: fakeCardList,
       },
     });

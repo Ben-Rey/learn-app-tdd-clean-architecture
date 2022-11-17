@@ -1,12 +1,14 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { CardPostResponse, ICard } from "../models/Card";
+import { ICard, ILevel, ITag } from "../models/Card";
 
 interface CardState {
   cardList: ICard[];
+  levels: ILevel[];
+  tags: ITag[];
 }
 
-const initialState = { cardList: [] } as CardState;
+const initialState = { cardList: [], levels: [], tags: [] } as CardState;
 
 const cardSlice = createSlice({
   name: "cards",
@@ -15,11 +17,18 @@ const cardSlice = createSlice({
     fetchCards(state, action: PayloadAction<ICard[]>) {
       state.cardList = action.payload;
     },
-    addNewCard(state, action: PayloadAction<CardPostResponse>) {
-      const currentState = current(state);
+    addNewCard(state, action: PayloadAction<ICard>) {
+      state.cardList.push(action.payload);
+    },
+    fetchLevels(state, action: PayloadAction<ILevel[]>) {
+      state.levels = action.payload;
+    },
+    fetchTags(state, action: PayloadAction<ITag[]>) {
+      state.tags = action.payload;
     },
   },
 });
 
-export const { addNewCard, fetchCards } = cardSlice.actions;
+export const { addNewCard, fetchCards, fetchLevels, fetchTags } =
+  cardSlice.actions;
 export default cardSlice.reducer;

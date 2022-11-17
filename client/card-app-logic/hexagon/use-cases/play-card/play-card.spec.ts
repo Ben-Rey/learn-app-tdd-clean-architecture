@@ -16,7 +16,6 @@ describe("Play Game", () => {
 
   it("should init a game by adding a set of gards", () => {
     store.dispatch(initCardGame(fakeCardList));
-    console.log(store.getState());
     expect(store.getState()).toEqual({
       ...initialState,
       cardGame: {

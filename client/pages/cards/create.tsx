@@ -11,165 +11,102 @@ import {
   TagLabel,
   Select,
 } from "@chakra-ui/react";
-import React from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ILevel, ITag } from "../../card-app-logic/hexagon/models/Card";
+import { CardPost } from "../../card-app-logic/hexagon/models/CardPost";
+import { fetchLevelsList } from "../../card-app-logic/hexagon/use-cases/get-levels/get-levels";
+import { fetchTagList } from "../../card-app-logic/hexagon/use-cases/get-tags/get-tags";
+import { AppDispatch, AppState } from "../../card-app-logic/store";
 
 interface Tag {
   name: string;
   color: string;
 }
 
-const tagsExample = [
-  {
-    name: "web3",
-    color: "red",
-  },
-  {
-    name: "clean code",
-    color: "green",
-  },
-  {
-    name: "test",
-    color: "blue",
-  },
-  {
-    name: "solidity",
-    color: "yellow",
-  },
-];
+const initialStateNewCard = {
+  question: "",
+  answer: "",
+  level: null,
+  tag: [],
+  category: [],
+};
 
-const levelList = [
-  {
-    id: 1,
-    niveau: "Ultra facile",
-    color: "",
-    isActive: true,
-  },
-  {
-    id: 2,
-    niveau: "Très facile",
-    color: "",
-    isActive: false,
-  },
-  {
-    id: 3,
-    niveau: "Assez facile",
-    color: "",
-    isActive: false,
-  },
-  {
-    id: 4,
-    niveau: "Facile",
-    color: "",
-    isActive: false,
-  },
-  {
-    id: 5,
-    niveau: "Moins facile",
-    color: "",
-    isActive: false,
-  },
-  {
-    id: 6,
-    niveau: "Moyen",
-    color: "",
-    isActive: false,
-  },
-  {
-    id: 7,
-    niveau: "Moyen +",
-    color: "",
-  },
-  {
-    id: 8,
-    niveau: "Difficile",
-    color: "",
-    isActive: false,
-  },
-  {
-    id: 9,
-    niveau: "Très difficile",
-    color: "",
-    isActive: false,
-  },
-  {
-    id: 10,
-    niveau: "Master Level",
-    color: "",
-    isActive: false,
-  },
-];
+function init(_initialStateNewCard: CardPost) {
+  return _initialStateNewCard;
+}
+
+type newCardActionType =
+  | "addTag"
+  | "removeTag"
+  | "changeLevel"
+  | "changeQuestion"
+  | "changeAnswer"
+  | "reset";
+
+function newCardReducer(
+  state: CardPost,
+  action: { type: newCardActionType; payload: any }
+) {
+  switch (action.type) {
+    case "addTag":
+      return { ...state, tag: [...state.tag, action.payload] };
+    case "removeTag":
+      const newTagList = state.tag.filter((tag) => tag !== action.payload);
+      return { ...state, tag: newTagList };
+    case "changeLevel":
+      return { ...state, level: action.payload };
+    case "changeQuestion":
+      return { ...state, question: action.payload };
+    case "changeAnswer":
+      return { ...state, answer: action.payload };
+    case "reset":
+      init(action.payload);
+    default:
+      throw new Error();
+  }
+}
 
 export default function CreateCard() {
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  const [tags, setTags] = useState<Tag[]>(() => tagsExample);
-  const [levels, setLevels] = useState(levelList);
-  const [level, setLevel] = useState({
-    id: 7,
-    niveau: "Moyen +",
-    color: "",
-  });
+  const dispatch = useDispatch<AppDispatch>();
+  const levels = useSelector((state: AppState) => state.cards.levels);
+  const tags = useSelector((state: AppState) => state.cards.tags);
+  const [newCard, dispatchNewCard] = useReducer(
+    newCardReducer,
+    initialStateNewCard,
+    init
+  );
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm();
+  useEffect(() => {
+    dispatch(fetchLevelsList());
+    dispatch(fetchTagList());
+  }, [dispatch]);
 
-  //export default function Counter() {
-  //let ref = useRef(0);
-
-  function handleClickLevel() {
-    //ref.current = ref.current + 1;
-    setLevel((prevState) => {
-      return { ...prevState, niveau: "jzdoijzd" };
-    });
+  function handleClickLevel(level: ILevel) {
+    dispatchNewCard({ type: "changeLevel", payload: level });
   }
 
-  function onSubmit(values: any) {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        resolve();
-      }, 3000);
-    });
+  function handleClickTag(event: React.ChangeEvent<HTMLSelectElement>) {
+    console.log("here");
+    const index = parseInt(event.target.value);
+    dispatchNewCard({ type: "addTag", payload: tags[index] });
   }
 
-  function handleTagSelection(event: React.ChangeEvent<HTMLSelectElement>) {
-    const selectedTagName = event.target.value;
-    const tagToAdd = tags.find((tag) => tag.name === selectedTagName);
-    const newTagList = tags.filter((tag) => tag.name !== selectedTagName);
-    if (tagToAdd) {
-      setSelectedTags((tags) => [tagToAdd, ...tags]);
-      setTags(newTagList);
-    }
+  function handleClickRemoveTag(tagToRemove: ITag) {
+    dispatchNewCard({ type: "removeTag", payload: tagToRemove });
   }
 
-  function handleRemoveTag(tagName: string) {
-    const selectedTagName = tagName;
+  function onQuestionChange(question: string) {
+    dispatchNewCard({ type: "changeQuestion", payload: question });
+  }
 
-    const tagToRemove = selectedTags.find(
-      (tag) => tag.name === selectedTagName
-    );
-
-    const newSelectedTagList = selectedTags.filter(
-      (tag) => tag.name !== selectedTagName
-    );
-
-    if (tagToRemove) {
-      setSelectedTags(newSelectedTagList);
-      setTags((tags) => [tagToRemove, ...tags]);
-    }
+  function onAnswerChange(question: string) {
+    dispatchNewCard({ type: "changeQuestion", payload: question });
   }
 
   return (
     <>
-      <Center
-        marginTop={"40px"}
-        padding="15px 15px 15px 15px"
-        borderRadius={"15px 15px 15px 15px"}
-      >
+      <Center marginTop={"40px"} padding="15px" borderRadius={"15px"}>
         <VStack
           spacing={2}
           border="1px"
@@ -180,43 +117,55 @@ export default function CreateCard() {
         >
           <FormControl padding={3} borderRadius={15}>
             <FormLabel>Question</FormLabel>
-            <Input type="text" />
+            <Input
+              type="text"
+              value={newCard.question || ""}
+              onChange={(e) => onQuestionChange(e.target.value)}
+            />
           </FormControl>
 
           <FormControl
             paddingLeft="10px"
-            borderRadius={"15px 15px 15px 15px"}
+            borderRadius={"15px"}
             paddingBottom="10px"
             paddingRight="10px"
           >
             <FormLabel>Réponse</FormLabel>
-            <Input type="text" />
+            <Input
+              type="text"
+              value={newCard.answer || ""}
+              onChange={(e) => onAnswerChange(e.target.value)}
+            />
           </FormControl>
 
           <HStack spacing={4}>
             {levels.map((level) => (
               <Button
-                onClick={handleClickLevel}
+                onClick={() => handleClickLevel(level)}
                 key={level.niveau}
-                isActive={level.isActive}
+                isActive={level.id === newCard.level?.id}
                 border="1px solid gray"
               >
                 {level.id}
               </Button>
             ))}
           </HStack>
-          <Select placeholder="Select option" onChange={handleTagSelection}>
-            {tags.map((tag) => (
-              <option key={tag.name} value={tag.name}>
-                {tag.name}
-              </option>
-            ))}
+
+          <Select placeholder="Choose Tag" onChange={handleClickTag}>
+            {tags.map((tag, index) => {
+              if (!newCard.tag.includes(tag))
+                return (
+                  <option key={tag.name} value={index}>
+                    {tag.name}
+                  </option>
+                );
+            })}
           </Select>
           <HStack spacing={4}>
-            {selectedTags.map((tag) => (
+            {newCard.tag.map((tag) => (
               <Tag size="md" key={tag.name} colorScheme={tag.color}>
                 <TagLabel>{tag.name}</TagLabel>
-                <TagCloseButton onClick={() => handleRemoveTag(tag.name)} />
+                <TagCloseButton onClick={() => handleClickRemoveTag(tag)} />
               </Tag>
             ))}
           </HStack>

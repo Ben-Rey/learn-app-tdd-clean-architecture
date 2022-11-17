@@ -6,7 +6,7 @@ export default function MainLayout({ children }: MainLayoutProps): JSX.Element {
   return (
     <>
       <nav data-testid="nav-main-layout">
-        <span>Layouts Example</span>
+        <span>Layouts Exaqsdlmqskdmlqskdmlmple</span>
       </nav>
       <main>{children}</main>
     </>

@@ -5,7 +5,17 @@ export interface CardPostResponse {
   identifiers: CardPostResponseId[];
 }
 
-export type Level = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export interface ILevel {
+  id: number;
+  niveau: string;
+  color: string;
+}
+
+export interface ITag {
+  id: number;
+  name: string;
+  color: string;
+}
 
 export interface ICard {
   id: string;
@@ -14,7 +24,7 @@ export interface ICard {
   updateAt?: Date | string;
   question: string;
   answer: string;
-  level: Level;
+  level: ILevel;
   tag: string[];
   category: string[];
   vote: number;

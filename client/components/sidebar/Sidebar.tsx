@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+
 import {
   IconButton,
   Avatar,
@@ -9,7 +10,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -22,29 +22,27 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-} from "react-icons/fi";
+
+import { FiHome, FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
+
+import { FaGamepad } from "react-icons/fa";
+import { MdCreateNewFolder } from "react-icons/md";
+import { BsFillCollectionFill } from "react-icons/bs";
+
 import { IconType } from "react-icons";
-import { ReactText } from "react";
+import Link from "next/link";
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  link: string;
 }
+
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Home", icon: FiHome, link: "/" },
+  { name: "Create", icon: MdCreateNewFolder, link: "/cards/create" },
+  { name: "Play", icon: FaGamepad, link: "/cards/play" },
+  { name: "List", icon: BsFillCollectionFill, link: "/cards/list" },
 ];
 
 export default function SidebarWithHeader({
@@ -54,7 +52,7 @@ export default function SidebarWithHeader({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box minH="100vh" bg={useColorModeValue("bg.light", "bg.dark")}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -74,12 +72,13 @@ export default function SidebarWithHeader({
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, md: 60 }} height="100vh">
         {children}
       </Box>
     </Box>
   );
 }
+SidebarWithHeader.displayName = "SidebarWithHeader";
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
@@ -89,7 +88,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
       transition="3s ease"
-      bg={useColorModeValue("white", "gray.900")}
+      bg={useColorModeValue("bg.light", "bg.dark")}
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
       w={{ base: "full", md: 60 }}
@@ -104,7 +103,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} link={link.link}>
           {link.name}
         </NavItem>
       ))}
@@ -114,15 +113,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
-  children: ReactText;
+  link: string;
+  children: React.ReactNode;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, link, children, ...rest }: NavItemProps) => {
   return (
-    <Link
-      href="#"
-      style={{ textDecoration: "none" }}
-      _focus={{ boxShadow: "none" }}
-    >
+    <Link href={link}>
       <Flex
         align="center"
         p="4"
@@ -131,7 +127,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "cyan.400",
+          bg: "greeny.300",
           color: "white",
         }}
         {...rest}
@@ -162,7 +158,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue("white", "gray.900")}
+      bg={useColorModeValue("bg.light", "bg.dark")}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
       justifyContent={{ base: "space-between", md: "flex-end" }}
@@ -223,7 +219,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               </HStack>
             </MenuButton>
             <MenuList
-              bg={useColorModeValue("white", "gray.900")}
+              bg={useColorModeValue("bg.light", "bg.dark")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <MenuItem>Profile</MenuItem>
