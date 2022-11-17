@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import type { NextPageWithLayout } from "./_app";
-import MainLayout from "../components/layouts/main-layout";
+import MainLayout from "../card-app-logic/adapters/primary/components/layouts/main-layout";
 import { Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 

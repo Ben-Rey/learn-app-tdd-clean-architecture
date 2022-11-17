@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, AppState } from "../../card-app-logic/store";
 import { fetchCardList } from "../../card-app-logic/hexagon/use-cases/get-gards";
 import { Flex } from "@chakra-ui/react";
-import Card from "../../components/card/GameCard";
+import Card from "../../card-app-logic/adapters/primary/components/card/GameCard";
 
 export default function CardList() {
   const dispatch = useDispatch<AppDispatch>();

@@ -1,5 +1,5 @@
 import { Badge, Box } from "@chakra-ui/react";
-import { ICard } from "../../card-app-logic/hexagon/models/Card";
+import { ICard } from "../../../../hexagon/models/Card";
 
 interface WrapperProps {
   children: React.ReactNode;

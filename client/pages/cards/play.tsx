@@ -9,7 +9,7 @@ import {
   next,
 } from "../../card-app-logic/hexagon/reducers/gameSlice";
 import { AppDispatch, AppState } from "../../card-app-logic/store";
-import Card from "../../components/card/GameCard";
+import Card from "../../card-app-logic/adapters/primary/components/card/GameCard";
 
 const Play = () => {
   const dispatch = useDispatch<AppDispatch>();

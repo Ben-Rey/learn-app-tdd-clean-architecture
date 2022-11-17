@@ -12,7 +12,7 @@ import {
   fakeTagList,
 } from "../card-app-logic/helpers/data.fake";
 import { Provider } from "react-redux";
-import SidebarWithHeader from "../components/sidebar/Sidebar";
+import SidebarWithHeader from "../card-app-logic/adapters/primary/components/sidebar/Sidebar";
 import "../styles/test.css";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
