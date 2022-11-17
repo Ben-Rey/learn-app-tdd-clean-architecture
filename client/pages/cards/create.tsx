@@ -32,16 +32,16 @@ export default function CreateCard() {
 
   return (
     <>
-      <Center marginTop={"40px"} padding="15px" borderRadius={"15px"}>
+      <Center marginTop={"40px"} padding="15px">
         <VStack
           spacing={2}
-          border="1px"
+          border={10}
           borderColor="gray.200"
           boxShadow={"lg"}
           padding={5}
-          borderRadius={15}
+          borderRadius={10}
         >
-          <FormControl padding={3} borderRadius={15}>
+          <FormControl padding={3}>
             <FormLabel>Question</FormLabel>
             <Input
               type="text"
@@ -50,12 +50,7 @@ export default function CreateCard() {
             />
           </FormControl>
 
-          <FormControl
-            paddingLeft="10px"
-            borderRadius={"15px"}
-            paddingBottom="10px"
-            paddingRight="10px"
-          >
+          <FormControl padding={3}>
             <FormLabel>Réponse</FormLabel>
             <Input
               type="text"
